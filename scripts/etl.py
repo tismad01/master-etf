@@ -17,7 +17,7 @@ else:
 with open('build/contracts/ETLSecurity.json') as f:
     contract_json = json.load(f)
 contract_abi = contract_json['abi']
-contract_address = '0xD5d0cc481d5da27CA4C907b7F1D538f53D510A4d'  # Replace with your deployed contract address
+contract_address = '0x268023C3C34097c82dceE3ad42945C010C586205'  # Replace with your deployed contract address
 
 # Initialize contract
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
