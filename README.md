@@ -9,16 +9,22 @@ master-etf/
 │
 ├── contracts/
 │   └── ETLSecurity.sol
+│   └── SecureETL.sol
+│   └── SimpleContract.sol
 │
 ├── build/
 │   └── contracts/
-│       └── ETLSecurity.json  # generated after compilation
+│       └── ETLSecurity.json  # all generated after compilation
+│       └── SecureETL.json 
+│       └── SimpleContract.json  
 │
 ├── migrations/
 │   └── 2_deploy_contracts.js
+│   └── 2_deploy_secure_etl.js
 │
 ├── scripts/
 │   └── etl.py
+│   └── etl2.py
 │
 ├── truffle-config.js
 │
@@ -87,16 +93,24 @@ Ganache provides a local Ethereum blockchain running on http://127.0.0.1:8545.
 
 2. **Update the etl.py script**:
 
-    Open scripts/etl.py.
-    Replace '0xMockAddress' with the deployed contract address.
+    Open scripts/etl.py and/or scripts/etl2.py.
+    Replace '0xMockAddress' with the deployed contract addresses from the migration output.
 
-3. **Execute the ETL script**:
+3. **Execute the ETL scripts**:
 
-    python scripts/etl.py
+    python scripts/etl.py 
 
 This script performs the following operations:
     Extracts data to the blockchain.
     Transforms data in the blockchain.
     Loads data from the blockchain.
+
+    python scripts/etl2.py
+
+This script performs the following operations with role-based access control:
+    Extracts data with role enforcement.
+    Applies multiple transformation steps, each requiring specific roles.
+    Loads and retrieves transformed data, ensuring only authorized roles can access it.
+    The output will display transaction IDs, role validations, and loaded data.
 
 The output will display transaction IDs and loaded data.
