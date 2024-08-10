@@ -4,7 +4,7 @@ This project demonstrates the use of blockchain technology to secure Extract, Tr
 
 ## Project Structure
 
-
+```bash
 master-etf/
 │
 ├── contracts/
@@ -29,6 +29,7 @@ master-etf/
 ├── truffle-config.js
 │
 └── requirements.txt
+```
 
 - **`contracts/`**: Contains the Solidity smart contract.
 - **`build/`**: Contains compiled contract JSON files (generated after compilation).
