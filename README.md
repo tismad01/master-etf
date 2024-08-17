@@ -114,3 +114,23 @@ This script performs the following operations with role-based access control:
     The output will display transaction IDs, role validations, and loaded data.
 
 The output will display transaction IDs and loaded data.
+
+### 5. Run the tests
+
+1. **Test the basic ETL process**:
+
+    python scripts/etlTest.py
+
+This test script checks:
+    Data extraction to the blockchain.
+    Data transformation on the blockchain.
+    Data loading from the blockchain.
+
+2. **Test the role-based secure ETL process**:
+
+    python scripts/etl2Test.py
+
+This test script checks:
+    Data extraction with role enforcement.
+    Multi-step data transformation with role enforcement.
+    Data loading with role-based access control.

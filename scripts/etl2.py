@@ -17,7 +17,7 @@ else:
 with open('build/contracts/SecureETL.json') as f:
     contract_json = json.load(f)
 contract_abi = contract_json['abi']
-contract_address = '0xed2eC9E309F77a8Ab1268020199Fc5C412aBdb93'  # Your deployed contract address
+contract_address = '0x6C76F9A2bb6FEf88FA5A3cD338Ac108477e68CD5'  # Your deployed contract address
 
 # Initialize contract
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
@@ -28,14 +28,15 @@ key = b'Sixteen byte key'
 def encrypt_data(data, key):
     """Encrypt data before storing on the blockchain."""
     cipher = AES.new(key, AES.MODE_EAX)
-    ciphertext, tag = cipher.encrypt_and_digest(data.encode('utf-8'))
-    return base64.b64encode(cipher.nonce + tag + ciphertext).decode('utf-8')
+    ciphertext, tag = cipher.encrypt_and_digest(data.encode('latin-1'))
+    return base64.b64encode(cipher.nonce + tag + ciphertext).decode('latin-1')
 
 def decrypt_data(ciphertext, key):
     """Decrypt data retrieved from the blockchain."""
     raw = base64.b64decode(ciphertext)
     cipher = AES.new(key, AES.MODE_EAX, nonce=raw[:16])
-    return cipher.decrypt(raw[32:]).decode('utf-8')
+    decrypted_data = cipher.decrypt(raw[32:])  
+    return decrypted_data.decode('latin-1')
 
 def extract_data(data, account):
     """Extract data into the blockchain."""
@@ -43,7 +44,6 @@ def extract_data(data, account):
     tx_hash = contract.functions.extractData(encrypted_data).transact({'from': account})
     web3.eth.wait_for_transaction_receipt(tx_hash)
 
-    # Extract data ID from transaction receipt logs
     receipt = web3.eth.get_transaction_receipt(tx_hash)
     data_id = receipt['logs'][0]['topics'][1].hex()
     return data_id
@@ -59,10 +59,15 @@ def transform_data_step1(data_id, new_data, account):
 def transform_data_step2(data_id, additional_data, account):
     """Second step of transforming data stored in the blockchain."""
     data_id_bytes32 = Web3.to_bytes(hexstr=data_id)
-    encrypted_data = encrypt_data(additional_data, key)
+    current_encrypted_data = contract.functions.loadData(data_id_bytes32).call()
+    decrypted_data = decrypt_data(current_encrypted_data, key)
+    combined_data = decrypted_data + additional_data
+    encrypted_data = encrypt_data(combined_data, key)
     tx_hash = contract.functions.transformDataStep2(data_id_bytes32, encrypted_data).transact({'from': account})
     web3.eth.wait_for_transaction_receipt(tx_hash)
     return tx_hash.hex()
+
+
 
 def load_data(data_id):
     """Load data from the blockchain."""

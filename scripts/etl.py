@@ -3,11 +3,10 @@
 from web3 import Web3
 import json
 
-# Connect to local blockchain (Ganache)
-ganache_url = "http://127.0.0.1:8545"  # Default URL for Ganache
+
+ganache_url = "http://127.0.0.1:8545"  
 web3 = Web3(Web3.HTTPProvider(ganache_url))
 
-# Check if connection is successful
 if web3.is_connected():
     print("Connected to Ethereum node")
 else:
@@ -17,7 +16,7 @@ else:
 with open('build/contracts/ETLSecurity.json') as f:
     contract_json = json.load(f)
 contract_abi = contract_json['abi']
-contract_address = '0x268023C3C34097c82dceE3ad42945C010C586205'  # Replace with your deployed contract address
+contract_address = '0x5ADA1177C4823f549B25CC3086545db72df81c36'  # Replace with your deployed contract address
 
 # Initialize contract
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
@@ -27,15 +26,13 @@ def extract_data(data, account):
     tx_hash = contract.functions.extractData(data).transact({'from': account})
     web3.eth.wait_for_transaction_receipt(tx_hash)
 
-    # Extract data ID from transaction receipt logs
     receipt = web3.eth.get_transaction_receipt(tx_hash)
-    # Find the event log with 'DataExtracted' and extract the data ID
-    data_id = receipt['logs'][0]['topics'][1].hex()  # Assuming the first log is the correct one
+    
+    data_id = receipt['logs'][0]['topics'][1].hex()  
     return data_id
 
 def transform_data(data_id, new_data, account):
     """Transform data stored in the blockchain."""
-    # Convert data_id to bytes32
     data_id_bytes32 = Web3.to_bytes(hexstr=data_id)
 
     tx_hash = contract.functions.transformData(data_id_bytes32, new_data).transact({'from': account})
@@ -44,7 +41,6 @@ def transform_data(data_id, new_data, account):
 
 def load_data(data_id):
     """Load data from the blockchain."""
-    # Convert data_id to bytes32
     data_id_bytes32 = Web3.to_bytes(hexstr=data_id)
 
     data = contract.functions.loadData(data_id_bytes32).call()

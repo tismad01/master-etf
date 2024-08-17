@@ -44,8 +44,6 @@ contract SecureETL is AccessControl {
     // First step of transforming the data
     function transformDataStep1(bytes32 id, string memory newData) public onlyRole(TRANSFORMER_ROLE) {
         require(dataRecords[id].timestamp != 0, "Data not found");
-
-        // Example condition: Only transform if the current data is not "restricted"
         require(keccak256(abi.encodePacked(dataRecords[id].data)) != keccak256(abi.encodePacked("restricted")), "Data transformation restricted");
 
         dataRecords[id].data = newData;
@@ -59,14 +57,13 @@ contract SecureETL is AccessControl {
     function transformDataStep2(bytes32 id, string memory additionalData) public onlyRole(TRANSFORMER_ROLE) {
         require(transformationHistory[id].length > 0, "Previous transformation required");
 
-        // Concatenate the new data with existing data for the second transformation
-        string memory combinedData = string(abi.encodePacked(dataRecords[id].data, additionalData));
-        dataRecords[id].data = combinedData;
+        dataRecords[id].data = additionalData;  
         dataRecords[id].timestamp = block.timestamp;
-        emit DataTransformed(id, combinedData, block.timestamp);
+        emit DataTransformed(id, additionalData, block.timestamp);
 
-        transformationHistory[id].push(TransformationRecord(combinedData, block.timestamp, msg.sender));
+        transformationHistory[id].push(TransformationRecord(additionalData, block.timestamp, msg.sender));
     }
+
 
     // Function to load data from the blockchain
     function loadData(bytes32 id) public view onlyRole(LOADER_ROLE) returns (string memory) {
