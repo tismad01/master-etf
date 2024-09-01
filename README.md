@@ -2,6 +2,8 @@
 
 This project demonstrates the use of blockchain technology to secure Extract, Transform, Load (ETL) processes. The solution utilizes Ethereum smart contracts to ensure data integrity and immutability during ETL operations.
 
+It showcases a robust integration of blockchain technology to enhance the security of ETL processes. By leveraging Ethereum smart contracts, the solution ensures data integrity and provides a secure, tamper-proof method for data handling in ETL operations.
+
 ## Project Structure
 
 ```bash
@@ -25,6 +27,10 @@ master-etf/
 ├── scripts/
 │   └── etl.py
 │   └── etl2.py
+│   └── etlTest.py
+│   └── etl2Test.py
+│   ├── cubetlTest.py             
+│   └── cubetl_config.py  
 │
 ├── truffle-config.js
 │
@@ -94,7 +100,7 @@ Ganache provides a local Ethereum blockchain running on http://127.0.0.1:8545.
 
 2. **Update the etl.py script**:
 
-    Open scripts/etl.py and/or scripts/etl2.py.
+    Open scripts/etl.py, scripts/etl2.py and/or scripts/cubetlTest.py.
     Replace '0xMockAddress' with the deployed contract addresses from the migration output.
 
 3. **Execute the ETL scripts**:
@@ -135,3 +141,9 @@ This test script checks:
     Data extraction with role enforcement.
     Multi-step data transformation with role enforcement.
     Data loading with role-based access control.
+
+3. **Test the role-based secure ETL process**:
+
+    python scripts/cubetlTest.py
+
+This script simulates an ETL process using CubETL without blockchain verification, demonstrating potential tampering scenarios as well as the integration of CubETL with blockchain to ensure data integrity and resistance to tampering. It verifies that the ETL process is secure and data remains immutable.

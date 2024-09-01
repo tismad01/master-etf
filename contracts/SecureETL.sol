@@ -21,6 +21,7 @@ contract SecureETL is AccessControl {
 
     mapping(bytes32 => DataRecord) public dataRecords;
     mapping(bytes32 => TransformationRecord[]) public transformationHistory;
+    mapping(string => bool) private existingData;
 
     event DataExtracted(bytes32 indexed id, string data, uint256 timestamp);
     event DataTransformed(bytes32 indexed id, string data, uint256 timestamp);
@@ -34,9 +35,13 @@ contract SecureETL is AccessControl {
     }
 
     // Function to extract data and store it on the blockchain
-    function extractData(string memory data) public onlyRole(EXTRACTOR_ROLE) returns (bytes32) {
+        function extractData(string memory data) public onlyRole(EXTRACTOR_ROLE) returns (bytes32) {
         bytes32 id = keccak256(abi.encodePacked(data, block.timestamp));
+        require(!existingData[data], "Data already exists or tampered attempt detected");
+        require(dataRecords[id].timestamp == 0, "Data already exists or tampered attempt detected");
+        
         dataRecords[id] = DataRecord(data, block.timestamp);
+        existingData[data] = true; // Mark this data as existing
         emit DataExtracted(id, data, block.timestamp);
         return id;
     }

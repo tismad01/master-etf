@@ -6752,10 +6752,22 @@
       "links": {},
       "address": "0x5ADA1177C4823f549B25CC3086545db72df81c36",
       "transactionHash": "0xd3ce8a0c060826ecdaec46f6065acb944e5db3579e4ab205175625ec345c4104"
+    },
+    "1724782223458": {
+      "events": {},
+      "links": {},
+      "address": "0xFBcd93AB104E4C69a0ef8F37A033964D1E2ae4F0",
+      "transactionHash": "0x2d52937d15c1082c4c2d1d9af087c416d354a6156d7f3196ed5c946bab6282fe"
+    },
+    "1725113676173": {
+      "events": {},
+      "links": {},
+      "address": "0xaA7868139DbcFf8203cF357ed35313Aa83953E23",
+      "transactionHash": "0x4ee27df02985a29b15f5314121fb507388b8da96cf18ab85e6da8c250027f020"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2024-08-16T19:55:41.194Z",
+  "updatedAt": "2024-08-31T21:10:29.537Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "A smart contract for securing ETL processes using blockchain technology.",
