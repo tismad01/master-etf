@@ -53,6 +53,7 @@ Ensure you have the following tools installed:
 - **Ganache**: [Download GUI](https://trufflesuite.com/ganache/) or install CLI with npm
 - **Truffle**: JavaScript-based framework for blockchain development
 - **Web3.py**: Python library to interact with Ethereum blockchain
+- **CubETL**: Framework and tool for data ETL (Extract, Transform and Load) in Python [Download from here](https://github.com/jjmontesl/cubetl)
 
 ## Installation Steps
 
